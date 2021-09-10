@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">잠금화면 캘린더</string>
+
+    <string name="allow">허용</string>
+    <string name="calendar">캘린더</string>
+    <string name="calendar_permission_rationale">이벤트를 가져오려면 캘린더 권한이 필요합니다.</string>
+    <string name="permission_rationale">앱의 모든 기능을 사용하려면 다음 권한을 허용해야 합니다.</string>
+    <string name="request_app_permissions">앱 권한 요청</string>
+    <string name="deny">거부</string>
+    <string name="year">년</string>
+
+    <string name="format_date">M월 d일 EEEE</string>
+
+    <string name="sunday">일</string>
+    <string name="monday">월</string>
+    <string name="tuesday">화</string>
+    <string name="wednesday">수</string>
+    <string name="thursday">목</string>
+    <string name="friday">금</string>
+    <string name="saturday">토</string>
+
+    <string-array name="months">
+        <item>1월</item>
+        <item>2월</item>
+        <item>3월</item>
+        <item>4월</item>
+        <item>5월</item>
+        <item>6월</item>
+        <item>7월</item>
+        <item>8월</item>
+        <item>9월</item>
+        <item>10월</item>
+        <item>11월</item>
+        <item>12월</item>
+    </string-array>
+</resources>

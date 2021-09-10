@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">CalendarLockScreen</string>
+
+    <string name="allow">ALLOW</string>
+    <string name="calendar">Calendar</string>
+    <string name="calendar_permission_rationale">Calendar permission is required to import events.</string>
+    <string name="deny">DENY</string>
+    <string name="permission_rationale">To use all features of the app, you must allow the following permissions.</string>
+    <string name="request_app_permissions">Request app permissions</string>
+    <string name="year"> </string>
+
+    <string name="format_12_hour" translatable="false">h:mm</string>
+    <string name="format_date">EEE, MMMM d</string>
+
+    <string name="sunday">S</string>
+    <string name="monday">M</string>
+    <string name="tuesday">T</string>
+    <string name="wednesday">W</string>
+    <string name="thursday">T</string>
+    <string name="friday">F</string>
+    <string name="saturday">S</string>
+
+    <string-array name="days_of_week">
+        <item>@string/sunday</item>
+        <item>@string/monday</item>
+        <item>@string/tuesday</item>
+        <item>@string/wednesday</item>
+        <item>@string/thursday</item>
+        <item>@string/friday</item>
+        <item>@string/saturday</item>
+    </string-array>
+
+    <string-array name="months">
+        <item>JAN</item>
+        <item>FEB</item>
+        <item>MAR</item>
+        <item>APR</item>
+        <item>MAY</item>
+        <item>JUN</item>
+        <item>JUL</item>
+        <item>AUG</item>
+        <item>SEP</item>
+        <item>OCT</item>
+        <item>NOV</item>
+        <item>DEC</item>
+    </string-array>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/rounded_corners.xml" value="0.2101851851851852" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1503623188405797" />
+        <entry key="app/src/main/res/layout/fragment_month_view.xml" value="0.1503623188405797" />
+        <entry key="app/src/main/res/layout/fragment_month_view_pager.xml" value="0.1503623188405797" />
+        <entry key="app/src/main/res/layout/fragment_permission_rationale_dialog.xml" value="0.1503623188405797" />
+        <entry key="app/src/main/res/layout/permission.xml" value="0.1503623188405797" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+</project>
