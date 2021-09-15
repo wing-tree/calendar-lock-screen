@@ -1,16 +1,21 @@
 package com.duke.orca.android.kotlin.calendarlockscreen.calendar.views
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.duke.orca.android.kotlin.calendarlockscreen.R
 import com.duke.orca.android.kotlin.calendarlockscreen.base.BaseFragment
 import com.duke.orca.android.kotlin.calendarlockscreen.calendar.DAYS_PER_WEEK
+import com.duke.orca.android.kotlin.calendarlockscreen.calendar.MONTHS_PER_YEAR
 import com.duke.orca.android.kotlin.calendarlockscreen.calendar.adapter.MonthViewAdapter
 import com.duke.orca.android.kotlin.calendarlockscreen.calendar.widgets.DayOfWeekItemView
 import com.duke.orca.android.kotlin.calendarlockscreen.databinding.FragmentMonthViewPagerBinding
+import com.duke.orca.android.kotlin.calendarlockscreen.main.viewmodel.MainViewModel
 import com.duke.orca.android.kotlin.calendarlockscreen.permission.views.PermissionRationaleDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -21,6 +26,7 @@ class MonthViewPagerFragment : BaseFragment<FragmentMonthViewPagerBinding>() {
         return FragmentMonthViewPagerBinding.inflate(inflater, container, false)
     }
 
+    private val activityViewModel by activityViewModels<MainViewModel>()
     private val adapter by lazy { MonthViewAdapter(this) }
     private val months by lazy { resources.getStringArray(R.array.months) }
     private val offscreenPageLimit = 3
@@ -60,6 +66,19 @@ class MonthViewPagerFragment : BaseFragment<FragmentMonthViewPagerBinding>() {
             }
         }
 
+        activityViewModel.selectedDay.observe(viewLifecycleOwner, {
+            parentFragmentManager.beginTransaction()
+                .add(R.id.fragment_container_view, InstancesViewPagerActivity.newInstance(it.julianDay))
+                .addToBackStack(null)
+                .commit()
+        })
+
+        activityViewModel.selectedCalendar.observe(viewLifecycleOwner, {
+            val year = it.get(Calendar.YEAR)
+            val month = it.get(Calendar.MONTH)
+            scrollTo(year, month, smoothScroll = true)
+        })
+
         return viewBinding.root
     }
 
@@ -82,5 +101,26 @@ class MonthViewPagerFragment : BaseFragment<FragmentMonthViewPagerBinding>() {
 //        viewBinding.textViewToday.text = viewModel.today.get(Calendar.DATE).toString()
     }
 
+    private fun scrollTo(year: Int, month: Int, smoothScroll: Boolean) {
+        val currentItem = viewBinding.viewPager2.currentItem
 
+        val from = Calendar.getInstance().apply {
+            add(Calendar.MONTH, currentItem - MonthViewAdapter.START_POSITION)
+        }
+
+        val to = Calendar.getInstance().apply {
+            set(Calendar.YEAR, year)
+            set(Calendar.MONTH, month)
+        }
+
+        val fromYear = from.get(Calendar.YEAR)
+        val fromMonth = from.get(Calendar.MONTH)
+
+        val toYear = to.get(Calendar.YEAR)
+        val toMonth = to.get(Calendar.MONTH)
+
+        val amount = toMonth - fromMonth + (toYear - fromYear) * MONTHS_PER_YEAR
+
+        viewBinding.viewPager2.setCurrentItem(currentItem + amount, smoothScroll)
+    }
 }

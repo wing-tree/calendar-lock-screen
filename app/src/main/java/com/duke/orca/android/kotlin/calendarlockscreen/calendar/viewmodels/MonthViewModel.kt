@@ -1,4 +1,4 @@
-package com.duke.orca.android.kotlin.calendarlockscreen.calendar.viewmodel
+package com.duke.orca.android.kotlin.calendarlockscreen.calendar.viewmodels
 
 import androidx.lifecycle.*
 import com.duke.orca.android.kotlin.calendarlockscreen.calendar.model.WeekOfMonthToInstances

@@ -11,6 +11,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.duke.orca.android.kotlin.calendarlockscreen.R
 import com.duke.orca.android.kotlin.calendarlockscreen.application.BLANK
+import com.duke.orca.android.kotlin.calendarlockscreen.application.MainApplication
 import com.duke.orca.android.kotlin.calendarlockscreen.calendar.VISIBLE_INSTANCE_COUNT
 import com.duke.orca.android.kotlin.calendarlockscreen.calendar.model.Day
 import com.duke.orca.android.kotlin.calendarlockscreen.application.toPx
@@ -55,19 +56,20 @@ class DayView : View {
     private var day: Day? = null
     private val bounds = Rect()
 
-    private lateinit var textPaint: TextPaint
+    private lateinit var dateTextPaint: TextPaint
     private lateinit var instanceTextPaint: TextPaint
     private lateinit var invisibleInstanceCountPaint: TextPaint
 
     private val eventColorPaint = Paint()
     private val eventColorRect = Rect()
+    private val todayPaint = Paint()
+    private val todayRect = Rect()
 
     constructor(context: Context, day: Day): super(context) {
         this.day = day
-
         val dayOfWeek = day.dayOfWeek
 
-        textPaint = TextPaint().apply {
+        dateTextPaint = TextPaint().apply {
             isAntiAlias = true
             textSize = TextSize.DATE.toPx
             color = when(dayOfWeek) {
@@ -106,11 +108,18 @@ class DayView : View {
         var currentY = DATE_TOP.toPx
 
         with(bounds) {
-            textPaint.getTextBounds(text, 0, text.length, this)
+            dateTextPaint.getTextBounds(text, 0, text.length, this)
             currentY += height().toFloat()
         }
 
-        canvas.drawText(text, DATE_START.toPx, currentY, textPaint)
+        canvas.drawText(text, DATE_START.toPx, currentY, dateTextPaint)
+
+        if (MainApplication.today == day.julianDay) {
+            todayPaint.color = dateTextPaint.color
+            dateTextPaint.color = Color.WHITE
+
+            canvas.drawRect(todayRect(), todayPaint)
+        }
 
         currentY += DATE_BOTTOM.toPx
 

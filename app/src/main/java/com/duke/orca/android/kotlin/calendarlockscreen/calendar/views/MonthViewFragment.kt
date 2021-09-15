@@ -1,17 +1,25 @@
 package com.duke.orca.android.kotlin.calendarlockscreen.calendar.views
 
+import android.app.ActivityOptions
+import android.content.Intent
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.duke.orca.android.kotlin.calendarlockscreen.R
 import com.duke.orca.android.kotlin.calendarlockscreen.application.PACKAGE_NAME
 import com.duke.orca.android.kotlin.calendarlockscreen.base.BaseFragment
+import com.duke.orca.android.kotlin.calendarlockscreen.calendar.model.Day
 import com.duke.orca.android.kotlin.calendarlockscreen.calendar.model.Month
-import com.duke.orca.android.kotlin.calendarlockscreen.calendar.viewmodel.MonthViewModel
+import com.duke.orca.android.kotlin.calendarlockscreen.calendar.viewmodels.MonthViewModel
+import com.duke.orca.android.kotlin.calendarlockscreen.calendar.widgets.DayView
+import com.duke.orca.android.kotlin.calendarlockscreen.calendar.widgets.MonthView
 import com.duke.orca.android.kotlin.calendarlockscreen.databinding.FragmentMonthViewBinding
+import com.duke.orca.android.kotlin.calendarlockscreen.main.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MonthViewFragment : BaseFragment<FragmentMonthViewBinding>() {
@@ -19,7 +27,12 @@ class MonthViewFragment : BaseFragment<FragmentMonthViewBinding>() {
         return FragmentMonthViewBinding.inflate(inflater, container, false)
     }
 
+    private val activityViewModel by activityViewModels<MainViewModel>()
     private val viewModel by viewModels<MonthViewModel>()
+
+    private val month: Month by lazy {
+        Month(arguments?.getInt(Key.YEAR) ?: 0, arguments?.getInt(Key.MONTH) ?: 0)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,17 +41,30 @@ class MonthViewFragment : BaseFragment<FragmentMonthViewBinding>() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val month = Month(
-            arguments?.getInt(Key.YEAR) ?: 0,
-            arguments?.getInt(Key.MONTH) ?: 0
-        )
-
         viewBinding.monthView.setMonth(month)
+        viewBinding.monthView.setOnDayClickListener(object : MonthView.OnDayClickListener {
+            override fun onDayClick(dayView: DayView, day: Day) {
+                activityViewModel.selectDay(day)
+            }
+        })
+
+        activityViewModel.selectedDay.observe(viewLifecycleOwner, {
+            if (month.month == it.month) {
+                viewBinding.monthView.selectDay(it)
+            } else {
+                viewBinding.monthView.unselect()
+            }
+        })
+
+        activityViewModel.selectedCalendar.observe(viewLifecycleOwner, {
+            if (month.month == it.get(Calendar.MONTH)) {
+                viewBinding.monthView.selectDay(it.get(Calendar.JULIAN_DAY))
+            } else {
+                viewBinding.monthView.unselect()
+            }
+        })
 
         viewModel.weekOfMonthToInstances.observe(viewLifecycleOwner, {
-            Timber.tag("sjk")
-            Timber.d("hi? : ${it.get(0).map { it.title }}")
-            Timber.d("hi2? : ${it.get(1).map { it.title }}")
             month.setWeekOfMonthToInstances(it)
             viewBinding.monthView.setMonth(month)
         })

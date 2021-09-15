@@ -2,6 +2,20 @@ package com.duke.orca.android.kotlin.calendarlockscreen.calendar
 
 import android.provider.CalendarContract
 
+internal object Events {
+    val projections: Array<String> = arrayOf(
+        CalendarContract.Events._ID,
+        CalendarContract.Events.DTSTART
+    )
+
+    const val selection = "MAX(${CalendarContract.Events._ID})"
+
+    object Index {
+        const val ID = 0
+        const val DTSTART = 1
+    }
+}
+
 internal object Instances {
     val projections: Array<String> = arrayOf(
         CalendarContract.Instances._ID,

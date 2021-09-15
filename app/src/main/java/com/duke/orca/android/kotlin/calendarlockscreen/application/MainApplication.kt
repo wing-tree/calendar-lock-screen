@@ -1,6 +1,7 @@
 package com.duke.orca.android.kotlin.calendarlockscreen.application
 
 import android.app.Application
+import android.icu.util.Calendar
 import androidx.viewbinding.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
@@ -13,5 +14,9 @@ class MainApplication : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+    }
+
+    companion object {
+        val today = Calendar.getInstance().get(Calendar.JULIAN_DAY)
     }
 }
